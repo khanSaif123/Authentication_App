@@ -1,0 +1,68 @@
+<html>
+
+<head>
+  <link rel="stylesheet" href="./style.css">
+  <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
+  <title>Sign in</title>
+</head>
+
+<body>
+  <div class="main">
+    <p class="sign" align="center">Sign in</p>
+    <form class="form1">
+      <input class="UI " type="text" align="center" placeholder="UserId">
+      <input class="pass" type="password" align="center" placeholder="Password">
+      <button class="submit" onclick="signFn(event)" align="center">Log In</button>
+      <p class="forgot" align="center"><a href="./register.html">Go to Registration Page</p>
+      <div class="response" align="center"></div>     
+                
+    </div>
+     
+</body>
+
+<script>
+
+  function signFn(eve){
+
+    eve.preventDefault();
+
+    // get the refrence.
+    let UserIdRef = document.querySelector(".UI");
+    let PasswordRef = document.querySelector(".pass");
+    let responseRef = document.querySelector(".response")
+
+    // get the values.
+    let UserId = UserIdRef.value;
+    let Password = PasswordRef.value;
+
+
+    let storageUser = localStorage.getItem("users");
+    let ObjstorageUser = JSON.parse(storageUser);
+
+      if(storageUser == null){
+        responseRef.innerHTML = "You are not Registered"
+        return;
+      }
+      let isUserExist = ObjstorageUser.some((obj)=>{
+        return obj.userId == UserId && obj.password == Password;
+      })
+      if(isUserExist){
+      location.href = 'home.html';
+      }
+      else{
+        responseRef.innerHTML = "Check your user id or password or Register first";
+      }
+    
+
+    UsernameRef.value = '';
+    PasswordRef.value = '';
+
+  }
+    
+
+
+</script>
+
+</html>

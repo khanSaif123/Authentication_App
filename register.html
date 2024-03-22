@@ -1,0 +1,83 @@
+<link rel="stylesheet" href="./style.css">
+
+
+<div class="main1">
+    <p class="sign" align="center">Registration</p>
+    <input class="UI " id="userName" type="text" align="center" placeholder="Username">
+    <input class="UI " id="userId" type="text" align="center" placeholder="User Id">
+    <input class="UI " id="password" type="password" align="center" placeholder="password">
+    <input class="UI " id="email" type="text" align="center" placeholder="Email">
+    <button class="submit" align="center" onclick="RegisterFn(event)">Register</button>
+    <p class="forgot" align="center"><a href="./login.html">Go to Login Page</p>
+        <div class="response" style="text-align: center;"></div>
+</div>
+
+<script>
+    function RegisterFn(e){
+        e.preventDefault();
+        // get the refrence.
+        let userNameRef = document.querySelector("#userName");
+        let userIdRef = document.querySelector("#userId");
+        let passwordRef = document.querySelector("#password");
+        let emailRef = document.querySelector("#email");
+        let resRef = document.querySelector(".response")
+
+        // get the value.
+        let userName = userNameRef.value;
+        let userId = userIdRef.value;
+        let password = passwordRef.value;
+        let email = emailRef.value;
+
+        // create an object and put those values.
+        let myObj ={
+            'userName': userName,
+            'userId': userId,
+            'password': password,
+            'email': email
+        }
+
+        // check if any of the empty.
+        if(!userName || !userId || !password || !email){
+            resRef.innerHTML = 'Please fill all the details';
+            return;
+        }
+
+        // check in the local storage any data is present.
+        let UserInStorage = localStorage.getItem('users');
+        let insertData = [];
+
+        if(UserInStorage == null){
+            // push myObj in side the insertData.
+            insertData.push(myObj);
+            // convert this object into string.
+            UserInStorage = JSON.stringify(insertData);
+            localStorage.setItem('users', UserInStorage); 
+        }else{
+          
+            // insertData already have a data that is in the form of string convert it into the json object.
+            insertData = JSON.parse(UserInStorage);
+
+            // check if the user is already registered if any of the above value matched.
+            let isUserExist = insertData.some((object)=>{
+                return object.userId === myObj.userId &&
+                       object.userName === myObj.userName &&
+                       object.password === myObj.password;
+            })
+            if(isUserExist){
+                resRef.innerHTML = "User is already registered";
+            }
+            else{
+                insertData.push(myObj);
+                UserInStorage = JSON.stringify(insertData);
+                localStorage.setItem("users", UserInStorage);
+                resRef.innerHTML = "You are successfully registered";
+            }
+        }
+
+        userNameRef.value = '';
+        userIdRef.value = '';
+        passwordRef.value = '';
+        emailRef.value = '';
+
+    }
+</script>
